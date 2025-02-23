@@ -10,10 +10,15 @@ const userSchema=mongoose.Schema({
         type:String,
         required:[true,'password is required']
     },
+  
+    password:{
+        type:String,
+        required:[true,'password is required' ], 
+    },
     email:{
         type:String,
-        unique:[true,'email is not unique'],
-        match:/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/
+        match:/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
+        unique:[true,'user name must be unique']
     },
     role:{
     type:String,
@@ -21,5 +26,5 @@ const userSchema=mongoose.Schema({
     enum:['user','admin']
     }
 },{timestamps:true})
-const User=mongoose.model('User',userSchema)
+const User=mongoose.model('users',userSchema)
 export default User
