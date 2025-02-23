@@ -17,16 +17,17 @@ export const createCategory = catchAsync(async (req, res, next) => {
 });
 
 export const getCategories = catchAsync(async (req, res, next) => {
-    const features = new (Category.find(), req.query)
+    const features = new ApiFeatures (Category.find(), req.query)
         .filter()
         .sort()
         .limitFields()
         .paginate();
-    const categories = await ApiFeatures.query;
- 
+    const categories = await features.query;
+    const count =await Category.countDocuments(req?.query?.filters)
+
     return res.status(200).json({
         success: true,
-        count: categories.length,
+        count,
         data: categories
     });
 });

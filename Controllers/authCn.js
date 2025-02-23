@@ -19,27 +19,41 @@ const Login=catchAsync(async(req,res,next)=>{
     const token=jwt.sign({id:user._id,role:user.role},process.env.SECRET_JWT)
     return res.status(200).json({
         success:true,
-        token,
-        data:{user,token},
+        
+        data:{username:user.username,token},
         message:'login successfully'
     })
 
 })
 const Register=catchAsync(async(req,res,next)=>{
-    const {password=null,role=null,...others}=req.body
-    const passReg=new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/)
-    if(!passReg.test(password)){
-        return next(new HandleERROR('password must contain at least 8 characters, one uppercase letter, one lowercase letter and one number',400))
-    }
-    const hashPassword=bcryptjs.hashSync(password,10)
-    const user=User.create({...others,password:hashPassword})
-    const token=jwt.sign({id:user._id,role:user.role},process.env.SECRET_JWT)
-    return res.status(200).json({
-        success:true,
-        data:{user,token},
-        message:'registration successfully'
-    })
+    const {email, password=null, role=null, ...others}=req.body
 
-})
+    // Validate password
+    const passReg = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/);
+    if (!passReg.test(password)) {
+        return next(new HandleERROR('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number.', 400));
+    }
+
+    // Check if email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return next(new HandleERROR('Email already exists.', 400));
+    }
+
+    // Hash the password
+    const hashedPassword = bcryptjs.hashSync(password, 10);
+
+    // Create a new user
+    const user = await User.create({ ...others, email, password: hashedPassword });
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.SECRET_JWT);
+
+    return res.status(200).json({
+        success: true,
+        data: { token, username: user.username },
+        message: 'Registration successful.'
+    });
+});
 
 export {Login,Register}

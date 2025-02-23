@@ -4,7 +4,7 @@ export const isAdmin = (req, res, next) => {
   try {
     const { id, role } = jwt.verify(
       req?.headers?.authorization.split(" ")[1],
-      process.env.SECRET_KEY
+      process.env.SECRET_JWT
     );
 
     req.id = id;

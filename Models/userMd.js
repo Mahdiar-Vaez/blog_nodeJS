@@ -12,8 +12,8 @@ const userSchema=mongoose.Schema({
     },
     email:{
         type:String,
-        unique:[true,'email is already in use'],
-        match:/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/
+        match:/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
+        unique:[true,'user name must be unique']
     },
     role:{
     type:String,
@@ -21,5 +21,5 @@ const userSchema=mongoose.Schema({
     enum:['user','admin']
     }
 },{timestamps:true})
-const User=mongoose.model('User',userSchema)
+const User=mongoose.model('users',userSchema)
 export default User
