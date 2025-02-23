@@ -3,9 +3,14 @@ import mongoose from 'mongoose'
 const userSchema=mongoose.Schema({
     username:{
         type:String,
-        required:[true,'password is required'],
-        unique:[true,'user name must be unique'],
+        required:[true,'username is required'],
+        unique:[true,'username is not unique']
     },
+    password:{
+        type:String,
+        required:[true,'password is required']
+    },
+  
     password:{
         type:String,
         required:[true,'password is required' ], 

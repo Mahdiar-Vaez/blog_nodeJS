@@ -21,12 +21,14 @@ const Login=catchAsync(async(req,res,next)=>{
         success:true,
         
         data:{username:user.username,token},
+        
+        data:{token,username},
         message:'login successfully'
     })
 
 })
 const Register=catchAsync(async(req,res,next)=>{
-    const {email, password=null, role=null, ...others}=req.body
+    const {email=null, password=null, role=null, ...others}=req.body
 
     // Validate password
     const passReg = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/);
@@ -35,10 +37,13 @@ const Register=catchAsync(async(req,res,next)=>{
     }
 
     // Check if email already exists
-    const existingUser = await User.findOne({ email });
+    if(email!=null){
+         const existingUser = await User.findOne({ email });
     if (existingUser) {
         return next(new HandleERROR('Email already exists.', 400));
     }
+    }
+   
 
     // Hash the password
     const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -55,5 +60,7 @@ const Register=catchAsync(async(req,res,next)=>{
         message: 'Registration successful.'
     });
 });
+        
+
 
 export {Login,Register}
