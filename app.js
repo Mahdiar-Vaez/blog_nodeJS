@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.static('Public'))
 app.use('/api/category',categoryRouter)
 app.use('/api/user',userRouter)
-app.use('api/comment',commentRouter)
+app.use('/api/comment',commentRouter)
 app.use('/api/auth',authRouter)
 app.use('/api/post',postRouter)
 

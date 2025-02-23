@@ -19,8 +19,8 @@ const Login=catchAsync(async(req,res,next)=>{
     const token=jwt.sign({id:user._id,role:user.role},process.env.SECRET_JWT)
     return res.status(200).json({
         success:true,
-        token,
-        data:{user,token},
+        
+        data:{token,username},
         message:'login successfully'
     })
 
@@ -36,7 +36,7 @@ const Register=catchAsync(async(req,res,next)=>{
     const token=jwt.sign({id:user._id,role:user.role},process.env.SECRET_JWT)
     return res.status(200).json({
         success:true,
-        data:{user,token},
+        data:{token,username:user.username},
         message:'registration successfully'
     })
 

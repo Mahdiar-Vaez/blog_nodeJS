@@ -3,17 +3,16 @@ import mongoose from 'mongoose'
 const userSchema=mongoose.Schema({
     username:{
         type:String,
-        required:true,
-        unique:true
+        required:[true,'username is required'],
+        unique:[true,'username is not unique']
     },
     password:{
         type:String,
-        required:true
+        required:[true,'password is required']
     },
     email:{
         type:String,
-        required:true,
-        unique:true,
+        unique:[true,'email is not unique'],
         match:/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/
     },
     role:{
